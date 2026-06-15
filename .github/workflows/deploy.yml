@@ -41,7 +41,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: abbi-ng-ai-image-descriptor/dist
+          path: abbi-ng-ai-image-descriptor/dist/abbi-ng-ai-image-descriptor/browser
 
   deploy:
     environment:
