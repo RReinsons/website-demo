@@ -38,6 +38,13 @@ jobs:
         working-directory: abbi-ng-ai-image-descriptor
         run: npm run build -- --base-href=/website-demo/
 
+      - name: Show build output
+        working-directory: abbi-ng-ai-image-descriptor
+        run: |
+          pwd
+          find dist -maxdepth 3 -type f | head -50
+          find dist -name index.html
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
