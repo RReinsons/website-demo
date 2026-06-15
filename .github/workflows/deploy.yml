@@ -38,17 +38,30 @@ jobs:
         working-directory: abbi-ng-ai-image-descriptor
         run: npm run build -- --base-href=/website-demo/
 
-      - name: Show build output
-        working-directory: abbi-ng-ai-image-descriptor
+      - name: Find and prepare built site
         run: |
-          pwd
-          find dist -maxdepth 3 -type f | head -50
-          find dist -name index.html
+          echo "Looking for built index.html..."
+          INDEX_FILE=$(find abbi-ng-ai-image-descriptor/dist -name index.html | head -n 1)
+          echo "Found index.html at: $INDEX_FILE"
+
+          if [ -z "$INDEX_FILE" ]; then
+            echo "No index.html found in dist folder"
+            exit 1
+          fi
+
+          SITE_DIR=$(dirname "$INDEX_FILE")
+          echo "Site directory is: $SITE_DIR"
+
+          mkdir -p pages-dist
+          cp -r "$SITE_DIR"/* pages-dist/
+
+          echo "Prepared Pages artifact:"
+          find pages-dist -maxdepth 2 -type f | head -50
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: abbi-ng-ai-image-descriptor/dist/browser
+          path: pages-dist
 
   deploy:
     environment:
